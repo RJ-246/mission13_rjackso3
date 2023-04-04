@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { Movie } from "../types/movie";
 
 // const jMovieData = data.MovieData;
+
 function MovieList() {
   const [listOfMovies, setListOfMovies] = useState<Movie[]>([]);
+  //Limits the requests to the API
   useEffect(() => {
+    //Gets all of the movies from the API and sets them to the list of movies
     const fetchMovies = async () => {
       const data = await fetch("https://localhost:4000/movie");
       const dataResults = await data.json();
@@ -48,6 +51,7 @@ function MovieList() {
           </thead>
 
           <tbody>
+            {/* Makes a table row for each movie in the movie list */}
             {listOfMovies.map((m) => (
               <tr key={m.movieId}>
                 <td>{m.title}</td>

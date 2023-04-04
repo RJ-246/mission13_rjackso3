@@ -21,6 +21,7 @@ namespace MovieAPI.Controllers
         // GET: /<controller>/
         public IEnumerable<Movies> Get()
         {
+            //Returns only records that have an edited title and orders them by title
             return context.Movies.Where(m => (m.Edited != "")).OrderBy(m => m.Title).ToArray();
         }
     }
