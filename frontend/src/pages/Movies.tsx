@@ -1,30 +1,39 @@
-import { useState } from "react";
-import data from "../MovieData.json";
+import { useEffect, useState } from "react";
+// import data from "./MovieData.json";
+import { Movie } from "../types/movie";
 
-const jMovieData = data.MovieData;
+// const jMovieData = data.MovieData;
 function MovieList() {
-  const [listOfMovies, setListOfMovies] = useState(jMovieData);
-  const addMovie = () => {
-    setListOfMovies([
-      ...jMovieData,
-      {
-        Category: "Comedy",
-        Title: "Back to the Future Part III",
-        Year: 1990,
-        Director: "Robert Zemeckis",
-        Rating: "PG",
-      },
-    ]);
-  };
+  const [listOfMovies, setListOfMovies] = useState<Movie[]>([]);
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const data = await fetch("https://localhost:4000/movie");
+      const dataResults = await data.json();
+      setListOfMovies(dataResults);
+    };
+    fetchMovies();
+  }, []);
+
+  // const addMovie = () => {
+  //   setListOfMovies([
+  //     ...jMovieData,
+  //     {
+  //       Category: "Comedy",
+  //       Title: "Back to the Future Part III",
+  //       Year: 1990,
+  //       Director: "Robert Zemeckis",
+  //       Rating: "PG",
+  //     },
+  //   ]);
+  // };
+
   return (
     <>
-      <div className="row">
-        <div className="col-12 align-self-center text-start">
-          <h3>Joel Hilton's Movie Collection</h3>
-        </div>
+      <div>
+        <h3>Joel Hilton's Movie Collection</h3>
       </div>
       <div>
-        <table className="table table-striped">
+        <table className="table">
           <thead>
             <tr>
               <th>Title</th>
@@ -33,26 +42,30 @@ function MovieList() {
               <th>Rating</th>
               <th>Category</th>
               <th>Edited</th>
+              <th>Lent To</th>
+              <th>Notes</th>
             </tr>
           </thead>
 
           <tbody>
             {listOfMovies.map((m) => (
-              <tr>
-                <td>{m.Title}</td>
-                <td>{m.Year}</td>
-                <td>{m.Director}</td>
-                <td>{m.Rating}</td>
-                <td>{m.Category}</td>
-                <td>{m.Edited}</td>
+              <tr key={m.movieId}>
+                <td>{m.title}</td>
+                <td>{m.year}</td>
+                <td>{m.director}</td>
+                <td>{m.rating}</td>
+                <td>{m.category}</td>
+                <td>{m.edited}</td>
+                <td>{m.lentTo}</td>
+                <td>{m.notes}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <button className="btn btn-primary" onClick={addMovie}>
+      {/* <button className="btn btn-primary" onClick={addMovie}>
         Add Movie
-      </button>
+      </button> */}
     </>
   );
 }
